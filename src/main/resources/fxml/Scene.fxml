@@ -92,11 +92,20 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </TextArea>
-            <Button fx:id="btnReset" mnemonicParsing="false" onAction="#doreset" text="Reset">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="590.0" right="10.0" top="10.0" />
-               </VBox.margin>
-            </Button>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="lblErrore" prefHeight="17.0" prefWidth="560.0" textFill="RED">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Button fx:id="btnReset" mnemonicParsing="false" onAction="#doreset" text="Reset">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>
