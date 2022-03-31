@@ -8,7 +8,6 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
-import it.polito.tdp.lab04.DAO.CorsoDAO;
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
 import it.polito.tdp.lab04.model.Studente;
@@ -70,6 +69,8 @@ public class FXMLController {
     	Studente ris=model.getNomeCognome(matrInt);
     	if(ris==null) {
     		lblErrore.setText("Matricola non trovata");
+    		txtNome.clear();
+    		txtCognome.clear();
     	} else {
     		lblErrore.setText("");
     		txtNome.setText(ris.getNome());
@@ -94,12 +95,11 @@ public class FXMLController {
     		
     	if(trovato) {
     		lblErrore.setText("");
-    		listaCorsi = model.getCorsiDelloStudente(studente);
+    		listaCorsi = new LinkedList<Corso>(model.getCorsiDelloStudente(studente));
     		txtArea.clear();
     		for(Corso c: listaCorsi)
     			txtArea.appendText(c+"\n");
     	}
-
     }
 
     @FXML
@@ -118,13 +118,40 @@ public class FXMLController {
     }
 
     @FXML
-    void doIscrivi(ActionEvent event) { //pulire lblerrore
-
+    void doIscrivi(ActionEvent event) {
+    	String cor=cmbCorso.getValue();
+    	String mat=txtMatricola.getText();
+    	Integer matricola=Integer.parseInt(mat);
+    	Corso corso=model.getCorso(cor);
+    	Studente studente=model.getStudente(matricola);
+    	LinkedList<Studente> listaStudenti=new LinkedList<Studente>(model.getStudentiIscrittiAlCorso(corso));
+    	Boolean trovato=false;
+    	
+    	for(Studente s:listaStudenti) 
+    		if(s.equals(studente)) { 
+    			trovato=true;
+    			break;
+    		}
+    	
+    	if(trovato) {
+    		txtArea.setText("Studente già iscritto al corso");	
+    	} else {
+    		if(model.inscriviStudenteACorso(studente, corso)) {
+    			txtArea.setText("Lo studente è stato iscritto correttamente al corso");
+    		} else {
+    			txtArea.setText("Non è stato possibile iscrivere lo studente al corso");
+    		}
+    	}
+    	lblErrore.setText("");
     }
 
     @FXML
-    void doreset(ActionEvent event) {  //pulire lblerrore
-
+    void doreset(ActionEvent event) {
+    	txtMatricola.clear();
+    	txtNome.clear();
+    	txtCognome.clear();
+    	txtArea.clear();
+    	lblErrore.setText("");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
